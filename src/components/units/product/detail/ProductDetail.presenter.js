@@ -16,7 +16,7 @@ const ProductDetailUI = ({data, onClickMoveToProductEdit}) => {
             </div>
             <div>
                 <label htmlFor="createdAt">상품내용</label>
-                <span>{data?.fetchProduct.detail}t</span>
+                <span>{data?.fetchProduct.detail}</span>
             </div>
             <div>
                 <label htmlFor="price">상품가격</label>

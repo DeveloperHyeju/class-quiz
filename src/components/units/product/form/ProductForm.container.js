@@ -5,7 +5,7 @@ import ProductFormUI from "./ProductForm.presenter";
 import { CREATE_PRODUCT, UPDATE_PRODUCT } from "./ProductForm.queries";
 
 
-const ProductForm = ({isEdit}) => {
+const ProductForm = ({isEdit, data}) => {
 
     const router = useRouter();
 
@@ -43,29 +43,25 @@ const ProductForm = ({isEdit}) => {
 
 
     const onClickEditProduct = async () => {
+        const updateProductVariables = {
+            productId: router.query.productId,
+            updateProductInput: {},
+        };
 
-        if (seller && name && detail && price) {
-            try {
-                const result = await updateProduct({
-                    variables: {
-                        productId: router.query.productId,
-                        updateProductInput: {
-                            name,
-                            detail,
-                            price: Number(price),
-                        }
-                    }
-                });
+        if (name) updateProductVariables.updateProductInput.name = name;
+        if (detail) updateProductVariables.updateProductInput.detail = detail;
+        if (price) updateProductVariables.updateProductInput.name = price;
 
-                alert(result.data.updateProduct.message);
-                router.push(`/08/${router.query.productId}`);
-            } catch (err) {
-                alert(err.message);
-            }
-        } else {
-            alert('제대로 입력했는지 확인해주세요.');
+        try {
+            const result = await updateProduct({
+                variables: updateProductVariables,
+            });
+
+            alert(result.data.updateProduct.message);
+            router.push(`/08/${router.query.productId}`);
+        } catch (err) {
+            alert(err.message);
         }
-
     };
 
 
@@ -97,6 +93,7 @@ const ProductForm = ({isEdit}) => {
 
 
     return <ProductFormUI isEdit={isEdit} 
+                        data={data}
                         onChangeSeller={onChangeSeller} 
                         onChangeName={onChangeName}
                         onChangeDetail={onChangeDetail}
